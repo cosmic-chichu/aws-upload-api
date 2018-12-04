@@ -2,6 +2,7 @@ import json
 import boto3
 import datetime
 from datetime import timedelta
+import dateutil.parser
 import constant
 
 s3_client = boto3.client('s3')
@@ -14,7 +15,8 @@ def lambda_handler(event, context):
     fileNameFormat = '%Y%m%d-%H%M%S%f'
 
     # to search for folders
-    timePrefix = datetime.datetime.now().strftime(datetimePrefix)
+    payloadTS = dateutil.parser.parse(event['ts'])
+    timePrefix = payloadTS.strftime(datetimePrefix)
 
     # for finding time delta
     timeNow = datetime.datetime.now().strftime(datetimeFormat)
